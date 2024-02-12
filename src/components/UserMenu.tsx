@@ -1,14 +1,14 @@
 import { LogOutIcon, UserIcon } from 'lucide-react';
 
 import { useRenderCounter } from '../hooks/useRenderCounter';
-import { globalStore } from '../store/globalStore';
+import { useGlobalStore } from '../store/globalStore';
 
 export function UserMenu() {
   useRenderCounter('UserMenu');
 
-  const user = globalStore.useStore((state) => state.user);
-  const login = globalStore.useStore((state) => state.login);
-  const logout = globalStore.useStore((state) => state.logout);
+  const user = useGlobalStore((state) => state.user);
+  const login = useGlobalStore((state) => state.login);
+  const logout = useGlobalStore((state) => state.logout);
 
   if (!user) {
     return (

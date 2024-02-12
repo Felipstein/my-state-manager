@@ -8,20 +8,44 @@ interface IGlobalStore {
   todos: ITodo[];
   login(): void;
   logout(): void;
-  // addTodo(title: string): void;
-  // toggleTodoDone(todoId: number): void;
-  // removeTodo(todoId: number): void;
+  addTodo(title: string): void;
+  toggleTodoDone(todoId: number): void;
+  removeTodo(todoId: number): void;
 }
 
-export const globalStore = createStore<IGlobalStore>((setState) => ({
-  user: null,
-  todos: [],
-  login: () =>
-    setState({
-      user: {
-        name: 'Felipe Oliveira',
-        email: 'felipe@jstack.com.br',
-      },
-    }),
-  logout: () => setState({ user: null }),
-}));
+export const useGlobalStore = createStore<IGlobalStore>(
+  (setState, getState) => ({
+    user: null,
+    todos: [],
+    login: () =>
+      setState({
+        user: {
+          name: 'Felipe Oliveira',
+          email: 'felipe@jstack.com.br',
+        },
+      }),
+    logout: () => setState({ user: null }),
+    addTodo: (title) => {
+      setState((prevState) => ({
+        todos: prevState.todos.concat({
+          id: Date.now(),
+          title,
+          author: getState().user?.name ?? 'Convidado',
+          done: false,
+        }),
+      }));
+    },
+    toggleTodoDone: (todoId) => {
+      setState((prevState) => ({
+        todos: prevState.todos.map((todo) =>
+          todo.id === todoId ? { ...todo, done: !todo.done } : todo,
+        ),
+      }));
+    },
+    removeTodo: (todoId) => {
+      setState((prevState) => ({
+        todos: prevState.todos.filter((todo) => todo.id !== todoId),
+      }));
+    },
+  }),
+);

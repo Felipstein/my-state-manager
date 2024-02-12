@@ -5,5 +5,6 @@ export function useRenderCounter(componentName: string) {
 
   counter.current += 1;
 
-  // console.log(`${componentName} renderizou ${counter.current} vezes.`);
+  // eslint-disable-next-line no-console
+  console.log(`${componentName} renderizou ${counter.current} vezes.`);
 }
